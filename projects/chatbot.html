@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conversational Chatbot</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-white">
+    <div class="container mx-auto p-6">
+        <h1 class="text-4xl font-bold text-primary mb-6">Conversational Chatbot</h1>
+        
+        <section class="mb-8">
+            <h2 class="text-2xl font-semibold text-secondary">What It Does</h2>
+            <p class="mt-2 text-gray-300">This project implements a conversational chatbot using OpenAI's API (Model: gpt-4o-mini) and Gradio for an interactive web interface. It allows users to have real-time conversations with an AI-powered assistant.</p>
+        </section>
+
+        <section class="mb-8">
+            <h2 class="text-2xl font-semibold text-secondary">Tools Required</h2>
+            <ul class="list-disc list-inside mt-2 text-gray-300">
+                <li>Python 3.11+</li>
+                <li>OpenAI API</li>
+                <li>Gradio (for web interface)</li>
+                <li>Dotenv (for environment variables)</li>
+                <li>Jupyter</li>
+            </ul>
+        </section>
+
+        <section class="mb-8">
+            <h2 class="text-2xl font-semibold text-secondary">Step-by-Step Explanation</h2>
+            
+            <div class="mt-4 p-4 bg-gray-800 rounded-lg">
+                <h3 class="text-xl font-bold text-primary">1. Import Required Packages</h3>
+                <pre class="bg-gray-700 p-3 rounded">import os
+from dotenv import load_dotenv
+from openai import OpenAI
+import gradio as gr</pre>
+                <p class="mt-2 text-gray-300">This imports necessary libraries: OpenAI for API access, dotenv for managing environment variables, and Gradio for creating a chat interface.</p>
+            </div>
+
+            <div class="mt-4 p-4 bg-gray-800 rounded-lg">
+                <h3 class="text-xl font-bold text-primary">2. Load Environment Variables</h3>
+                <pre class="bg-gray-700 p-3 rounded">load_dotenv(override=True)
+openai_api_key = os.getenv('OPENAI_API_KEY')
+if openai_api_key:
+    print(f"OpenAI API Key exists and begins {openai_api_key[:8]}")
+else:
+    print("OpenAI API Key not set")</pre>
+                <p class="mt-2 text-gray-300">This step loads the OpenAI API key from a <code>.env</code> file and ensures that the key is correctly retrieved.</p>
+            </div>
+
+            <div class="mt-4 p-4 bg-gray-800 rounded-lg">
+                <h3 class="text-xl font-bold text-primary">3. Initialize OpenAI Client</h3>
+                <pre class="bg-gray-700 p-3 rounded">openai = OpenAI()
+MODEL = 'gpt-4o-mini'</pre>
+                <p class="mt-2 text-gray-300">Here, we initialize the OpenAI client and define the GPT model to be used for generating responses.</p>
+            </div>
+
+            <div class="mt-4 p-4 bg-gray-800 rounded-lg">
+                <h3 class="text-xl font-bold text-primary">4. Define System Message</h3>
+                <pre class="bg-gray-700 p-3 rounded">system_message = "You are a helpful assistant"</pre>
+                <p class="mt-2 text-gray-300">This system message sets the chatbot's behavior, ensuring it acts as a helpful assistant during interactions.</p>
+            </div>
+
+            <div class="mt-4 p-4 bg-gray-800 rounded-lg">
+                <h3 class="text-xl font-bold text-primary">5. Define Chat Function</h3>
+                <pre class="bg-gray-700 p-3 rounded">def chat(message, history):
+    messages = [{"role": "system", "content": system_message}] + history + [{"role": "user", "content": message}]
+    stream = openai.chat.completions.create(model=MODEL, messages=messages, stream=True)
+    response = ""
+    for chunk in stream:
+        response += chunk.choices[0].delta.content or ''
+        yield response</pre>
+                <p class="mt-2 text-gray-300">This function manages conversation history and sends user input to OpenAI's API, retrieving responses in real-time.</p>
+            </div>
+
+            <div class="mt-4 p-4 bg-gray-800 rounded-lg">
+                <h3 class="text-xl font-bold text-primary">6. Launch Gradio Interface</h3>
+                <pre class="bg-gray-700 p-3 rounded">gr.ChatInterface(fn=chat, type="messages").launch()</pre>
+                <p class="mt-2 text-gray-300">This starts a web-based chat interface using Gradio, allowing users to interact with the chatbot through a user-friendly UI.</p>
+            </div>
+        </section>
+    </div>
+</body>
+</html>

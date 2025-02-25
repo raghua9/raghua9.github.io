@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DALL·E Image Generation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-white">
+    <div class="container mx-auto p-6">
+        <h1 class="text-4xl font-bold text-primary mb-6">DALL·E Image Generation</h1>
+        
+        <section class="mb-8">
+            <h2 class="text-2xl font-semibold text-secondary">Overview</h2>
+            <p class="mt-2 text-gray-300">This project utilizes OpenAI's DALL·E-3 model to generate images based on textual descriptions. The script processes image data and displays AI-generated visuals.</p>
+        </section>
+
+        <section class="mb-8">
+            <h2 class="text-2xl font-semibold text-secondary">Required Tools</h2>
+            <ul class="list-disc list-inside mt-2 text-gray-300">
+                <li>Python 3.11+</li>
+                <li>OpenAI API</li>
+                <li>PIL (Pillow) for image handling</li>
+                <li>Base64 for encoding/decoding images</li>
+                <li>Dotenv for environment variable management</li>
+            </ul>
+        </section>
+
+        <section class="mb-8">
+            <h2 class="text-2xl font-semibold text-secondary">Step-by-Step Explanation</h2>
+            
+            <div class="mt-4 p-4 bg-gray-800 rounded-lg">
+                <h3 class="text-xl font-bold text-primary">1. Import Necessary Libraries</h3>
+                <pre class="bg-gray-700 p-3 rounded">import os
+import json
+from dotenv import load_dotenv
+from openai import OpenAI
+import base64
+from io import BytesIO
+from PIL import Image</pre>
+                <p class="mt-2 text-gray-300">These libraries help in environment management, API interaction, and image processing.</p>
+            </div>
+
+            <div class="mt-4 p-4 bg-gray-800 rounded-lg">
+                <h3 class="text-xl font-bold text-primary">2. Load OpenAI API Key</h3>
+                <pre class="bg-gray-700 p-3 rounded">load_dotenv(override=True)
+openai_api_key = os.getenv('OPENAI_API_KEY')
+if openai_api_key:
+    print(f"OpenAI API Key exists and begins {openai_api_key[:8]}")
+else:
+    print("OpenAI API Key not set")</pre>
+                <p class="mt-2 text-gray-300">This ensures secure storage of the API key in a <code>.env</code> file.</p>
+            </div>
+
+            <div class="mt-4 p-4 bg-gray-800 rounded-lg">
+                <h3 class="text-xl font-bold text-primary">3. Initialize OpenAI Client</h3>
+                <pre class="bg-gray-700 p-3 rounded">openai = OpenAI()</pre>
+                <p class="mt-2 text-gray-300">The OpenAI client is initialized to interact with the DALL·E API.</p>
+            </div>
+
+            <div class="mt-4 p-4 bg-gray-800 rounded-lg">
+                <h3 class="text-xl font-bold text-primary">4. Generate an Image</h3>
+                <pre class="bg-gray-700 p-3 rounded">def artist(city):
+    image_response = openai.images.generate(
+        model="dall-e-3",
+        prompt=f"An image representing a tradition in {city}, showing everything unique about {city}",
+        size="1024x1024",
+        n=1,
+        response_format="b64_json",
+    )
+    image_base64 = image_response.data[0].b64_json
+    image_data = base64.b64decode(image_base64)
+    return Image.open(BytesIO(image_data))</pre>
+                <p class="mt-2 text-gray-300">This function generates an image based on a given city name.</p>
+            </div>
+
+            <div class="mt-4 p-4 bg-gray-800 rounded-lg">
+                <h3 class="text-xl font-bold text-primary">5. Display the Generated Image</h3>
+                <pre class="bg-gray-700 p-3 rounded">image = artist("Delhi")
+display(image)</pre>
+                <p class="mt-2 text-gray-300">The generated image is displayed using PIL.</p>
+            </div>
+        </section>
+    </div>
+</body>
+</html>

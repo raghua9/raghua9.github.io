@@ -1,13 +1,156 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Portfolio</title>
+    <title>Raghunath Are | Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#64ffda'
+                    }
+                }
+            }
+        }
+    </script>
 </head>
-<body>
-    <h1>Hello, I'm [Your Name]!</h1>
-    <p>Welcome to my personal website. I am a software engineer passionate 
-about AI & LLMs.</p>
+
+<body class="bg-gray-900 text-white font-sans">
+    <div class="flex min-h-screen">
+        <!-- Sidebar Navigation -->
+        <nav class="w-1/5 min-h-screen fixed p-6 bg-gray-800 flex flex-col items-center">
+            <!-- Profile Image -->
+            <img src="images/raghu.jpg" alt="Profile Picture"
+                class="rounded-full w-32 h-32 mb-4 shadow-lg border-4 border-primary">
+
+            <!-- Navigation Links -->
+            <ul class="space-y-6 text-lg w-full text-left">
+                <li><a href="#about" class="hover:text-primary">About</a></li>
+                <li><a href="#experience" class="hover:text-primary">Experience</a></li>
+                <li><a href="#projects" class="hover:text-primary">Projects</a></li>
+                <ul class="pl-4 space-y-4 text-base text-gray-400">
+                    <li><a href="#gen-ai" class="hover:text-primary">Gen AI</a></li>
+                    <li><a href="#qtpi" class="hover:text-primary">QtPi</a></li>
+                    <li><a href="#others" class="hover:text-primary">Others</a></li>
+                </ul>
+            </ul>
+        </nav>
+        <!-- Main Content -->
+        <div class="w-4/5 ml-auto p-12">
+
+            <!-- About Section -->
+            <section id="about" class="mb-16" data-aos="fade-up">
+                <h2 class="text-3xl font-bold text-primary">About Me</h2>
+                <div class="mt-6">
+                    <p class="text-gray-400">
+                        I’m <span class="text-primary font-semibold">Raghunath Are</span>, a tech leader with 
+                        <span class="font-semibold">16+ years of experience</span>. I have worked at 
+                        <span class="font-semibold">Yahoo and Microsoft</span>, specializing in 
+                        <span class="font-semibold">AdQuality, Relevance, and Ranking</span> within 
+                        <span class="font-semibold">Online AdTech at scale</span>.
+                    </p>
+                    <p class="text-gray-400 mt-4">
+                        Later, I <span class="font-semibold">co-founded QtPi Robotics</span>, 
+                        bringing a product from ideation to production, now helping 
+                        <span class="font-semibold">120K+ K12 students</span> transition from 
+                        <span class="font-semibold">consumers to creators</span> through 
+                        <span class="font-semibold">Robotics, Coding, and AI</span>.
+                    </p>
+                    <p class="text-gray-400 mt-4">
+                        I thrive on <span class="font-semibold">solving complex challenges, leading teams,</span> 
+                        and building <span class="font-semibold">simple, scalable solutions</span>. 
+                        With a strong focus on <span class="font-semibold">collaboration, adaptability, and empathy</span>, 
+                        I ensure that both <span class="font-semibold">people and products grow together</span>.
+                    </p>
+                    <p class="text-gray-400 mt-4">
+                        🚀 I’m always learning. Currently, I’m upgrading my skills in 
+                        <span class="font-semibold">Generative AI and Cloud Native technologies</span> 
+                        to build better and more efficient solutions.
+                    </p>
+                    <p class="text-gray-400 mt-4">
+                        🏔️ Beyond tech, I love <span class="font-semibold">trekking and sports</span>, 
+                        always ready for a challenge—whether it’s conquering a mountain trail or solving complex problems.
+                    </p>
+                </div>
+            </section>
+
+            <!-- Experience Section -->
+            <section id="experience" class="mb-16" data-aos="fade-up">
+                <h2 class="text-3xl font-bold">Experience</h2>
+                <div class="mt-6 space-y-6">
+                    <div class="bg-gray-800 p-6 rounded-lg">
+                        <h3 class="text-xl font-semibold">
+                            Co-founder & Software Engineering Manager - 
+                            <a href="https://www.youtube.com/@qtpiRobotics" target="_blank" class="text-primary hover:underline">
+                                QtPi Robotics
+                            </a>
+                        </h3>
+                        <p class="text-gray-400">
+                            Leading <span class="font-semibold">Low-Code/No-Code, Firmware, and LMS</span>. Built an 
+                            <span class="font-semibold">EdTech product</span> from idea to production, now reaching 
+                            <span class="font-semibold">120K+ K12 students</span>. Led <span class="font-semibold">team building, 
+                            product development, and scaling</span>, while driving <span class="font-semibold">strategy and innovation</span>. 
+                            Helping students develop <span class="font-semibold">Computational and Algorithmic Thinking</span> through 
+                            <span class="font-semibold">Robotics, Coding, and AI</span>, turning them from consumers to creators.
+                        </p>
+                    </div>
+                    <div class="bg-gray-800 p-6 rounded-lg">
+                        <h3 class="text-xl font-semibold">Senior Software Engineer - Microsoft</h3>
+                        <p class="text-gray-400">
+                            Worked on high-availability distributed systems in BingAds' AdQuality, Relevance & Ranking, 
+                            handling millions of requests. Built systems for automatic detection of keywords/ads in pre-serving 
+                            and post-serving, as well as systems to support manual reviews, reducing manual effort from 5% to 3%. 
+                            Contributed to ad ranking, allocation, and pricing, driving expansion into 20+ international markets. 
+                            Designed and executed a Business Continuity Plan (BCP) to ensure system resilience. 
+                            Created a system for individual test environments, eliminating dependencies and enhancing developer productivity. 
+                            Recognized with the "Enable Others" award for mentoring and collaboration.
+                        </p>
+                    </div>
+                    <div class="bg-gray-800 p-6 rounded-lg">
+                        <h3 class="text-xl font-semibold">Software Engineer - Yahoo!</h3>
+                        <p class="text-gray-400">
+                            Developed and optimized features for AdQuality in Yahoo’s text and display ads, ensuring high performance 
+                            and reliability across deployments. Designed and implemented automated solutions for UI, API, and database 
+                            interactions, reducing manual testing efforts and accelerating the release cycle. Contributed to requirement 
+                            analysis, system design, and implementation, enhancing system scalability, performance, and stability in 
+                            production environments.
+                        </p>
+                    </div>
+                </div>
+            </section>
+            <!-- Projects Section -->
+            <section id="projects" class="mb-16" data-aos="fade-up">
+                <h2 class="text-3xl font-bold text-primary">Projects</h2>
+
+                <!-- Gen AI Projects -->
+                <div id="gen-ai" class="mt-6">
+                    <h3 class="text-2xl font-semibold text-primary">Gen AI</h3>
+
+                    <!-- Project 1 -->
+                    <div class="bg-gray-800 p-6 rounded-lg mt-4">
+                        <h4 class="text-xl font-semibold">Chatbot with LLM (OpenAI)</h4>
+                        <p class="text-gray-400">Built a conversational chatbot using OpenAI's GPT models, integrating it with a web UI for interactive responses.</p>
+                        <a href="projects/chatbot.html" class="text-primary hover:underline">Read More</a>
+                    </div>
+
+                    <!-- Project 2 -->
+                    <div class="bg-gray-800 p-6 rounded-lg mt-4">
+                        <h4 class="text-xl font-semibold">Image Generation using LLM (DALL-E)</h4>
+                        <p class="text-gray-400">Implemented image generation using DALL-E from textual descriptions</p>
+                        <a href="projects/image_generation.html" class="text-primary hover:underline">Read More</a>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+    <script>
+        AOS.init();
+    </script>
 </body>
 </html>
