@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RC Car using QtPi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-white">
+    <div class="container mx-auto p-6">
+        <h1 class="text-4xl font-bold text-primary mb-6">Automatic Water Pump (Low Code Platform - Python based)</h1>
+        <p class="text-gray-300">Automatic water pump system helps in conserving water,its an automated system it will turn on/off motor according to water level in tank.</p>
+
+        <section id="introduction" class="mt-8 bg-gray-800 p-4 rounded-lg">
+            <h2 class="text-2xl font-semibold text-secondary">Introduction</h2>
+            <p class="mt-2 text-gray-300">This project showcases how to build Automatic Water Pump using QtPi hardware and writing logic using python based low-code programming platform.</p>
+        </section>
+
+        <section id="components" class="mt-8 bg-gray-800 p-4 rounded-lg">
+            <h2 class="text-2xl font-semibold text-secondary">Components Used</h2>
+            <ul class="list-disc list-inside mt-2 text-gray-300">
+                <li>QtPi Board</li>
+                <li>Ultrasonic Sensor</li>
+                <li>Pump Motor</li>
+                <li>ARGB LED</li>
+                <li>Building Blocks</li>
+                <li>Python based Low-Code platform</li>
+            </ul>
+        </section>
+
+        <section id="circuit" class="mt-8 bg-gray-800 p-4 rounded-lg">
+            <h2 class="text-2xl font-semibold text-secondary">Building Hardware Structure</h2>
+            <img src="../images/waterpump_connect.png" alt="Circuit Diagram" class="mt-4 w-full max-w-md rounded-lg">
+            <p class="mt-2 text-gray-300">Build the Structure using building blocks. Connect the components as shown in the picture</p>
+        </section>
+
+        <section id="block-code" class="mt-8 bg-gray-800 p-4 rounded-lg">
+            <h2 class="text-2xl font-semibold text-secondary">Code using Low Code Platform</h2>
+            <p class="mt-2 text-gray-300">Logic for Automatic Water Pump is written using the low-code platform <a href="https://qtlearncodelab.github.io/qtblocks-web/" target="_blank" class="text-blue-400 underline">Python-Low Code</a> 
+                which provides a digital version of all physical components, such as Ultrasonic Sensor, Pump Motor, ARGB LED in the case of the Automatic Waterpump project.</p>
+            
+            <h3 class="text-xl font-semibold text-secondary mt-4">Algorithm</h3>
+            <p class="text-gray-300">- Ultrasonic sensor detects the level of water, if it reaches near to top ( < 5 cm in this example), pump motor is turned off so that water wont be pumped and ARGB LED will turn RED</p>
+            <p class="text-gray-300">- If Ultrasonic Sensor reading is more ( > 5 cm in this example), pump motor is turned on so that water will be pumped and ARGB LED will turn GREEN</p>
+            <img src="../images/waterpump_code.png" alt="Circuit Diagram" class="mt-4 w-full max-w-md rounded-lg">
+
+            <section id="code-snippet" class="mt-8 bg-gray-800 p-4 rounded-lg">
+                <h2 class="text-2xl font-semibold text-secondary">Python Code (Automatically generated based on block based coding)</h2>
+                <p class="mt-2 text-gray-300">
+                    The following Python script controls a pump motor and LED indicators based on ultrasonic sensor readings.
+                </p>
+                <pre class="mt-4 bg-gray-900 p-4 rounded-lg overflow-x-auto text-gray-300 text-sm">
+                    <code>
+                        from uqtpy.sensors.ultrasonic import UltraSonic
+                        from uqtpy.actuators.argb import ARGB
+                        from uqtpy.actuators.pumpmotor import PumpMotor
+                        from time import sleep_ms
+                        
+                        ultrasonic2 = None
+                        argb2 = None
+                        pumpmotor2 = None
+                        distance = None
+                        
+                        ultrasonic2 = UltraSonic(port=1, ob=True)
+                        argb2 = ARGB(port=2, pixels=8, ob=True)
+                        pumpmotor2 = PumpMotor(port=1, ob=True)
+                        
+                        while True:
+                            distance = ultrasonic2.read_distance_cm()
+                            print(ultrasonic2)
+                            if distance > 5:
+                                pumpmotor2.run(speed=200)
+                                argb2.set_color(pixels=0, red=0, green=255, blue=0, show=True)
+                            elif distance <= 5:
+                                pumpmotor2.run(speed=0)
+                                argb2.set_color(pixels=0, red=255, green=0, blue=0, show=True)
+                            sleep_ms(200)
+                    </code>
+                </pre>
+            </section>
+            
+        </section>
+
+        <section id="demo" class="mt-8 bg-gray-800 p-4 rounded-lg">
+            <h2 class="text-2xl font-semibold text-secondary">Complete Project</h2>
+            <p class="mt-2 text-gray-300">QBrick (Motherboard) will have firmware in it which understands the logic written using Low-Code platform</p>
+            <img src="../images/waterpump_infographic.png" alt="Circuit Diagram" class="mt-4 w-full max-w-md rounded-lg">
+        </section>
+    </div>
+    <footer class="mt-8 text-center text-gray-500">
+        <a href="https://www.youtube.com/@QtPiRobotics" target="_blank" class="text-blue-400 underline">QtPi Youtube </a>
+    </footer>
+</body>
+</html>
