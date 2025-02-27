@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RC Car using QtPi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-white">
+    <div class="container mx-auto p-6">
+        <h1 class="text-4xl font-bold text-primary mb-6">RC Car using QtPi (Low Code Platform)</h1>
+        <p class="text-gray-300">An RC car is a Remote Controlled car, which can move in four directions. It could be controlled with an android device using Bluetooth.</p>
+
+        <section id="introduction" class="mt-8 bg-gray-800 p-4 rounded-lg">
+            <h2 class="text-2xl font-semibold text-secondary">Introduction</h2>
+            <p class="mt-2 text-gray-300">This project showcases how to build an RC car using hardware and develop a mobile app to control it using a low-code programming platform.</p>
+        </section>
+
+        <section id="components" class="mt-8 bg-gray-800 p-4 rounded-lg">
+            <h2 class="text-2xl font-semibold text-secondary">Components Used</h2>
+            <ul class="list-disc list-inside mt-2 text-gray-300">
+                <li>QtPi Board</li>
+                <li>DC Motors (2)</li>
+                <li>Building Blocks</li>
+                <li>Code2platform to develop mobile app</li>
+            </ul>
+        </section>
+
+        <section id="circuit" class="mt-8 bg-gray-800 p-4 rounded-lg">
+            <h2 class="text-2xl font-semibold text-secondary">Building Hardware Structure</h2>
+            <img src="../images/rc_car.png" alt="Circuit Diagram" class="mt-4 w-full max-w-md rounded-lg">
+            <p class="mt-2 text-gray-300">Build the Structure using building blocks. Connect left motor to Port M1 and Right motor to port M2 on QtPi Motherboard</p>
+        </section>
+
+        <section id="block-code" class="mt-8 bg-gray-800 p-4 rounded-lg">
+            <h2 class="text-2xl font-semibold text-secondary">Mobile App Development using Low Code Platform</h2>
+            <p class="mt-2 text-gray-300">The mobile app is developed using the low-code platform <a href="https://www.stemdesi.in/" target="_blank" class="text-blue-400 underline">Code2Play</a> 
+                which provides a digital version of all physical components, such as motors in the case of the RC car.</p>
+            
+            <h3 class="text-xl font-semibold text-secondary mt-4">Moving Forward</h3>
+            <p class="text-gray-300">- When the 'Forward' button is pressed (TouchDown event), both motors rotate at same speed (Ex: 255) in the clockwise direction.</p>
+            <p class="text-gray-300">- When the 'Forward' button is released (TouchUp event), both motors stop.</p>
+            <img src="../images/rc_forward.png" alt="Circuit Diagram" class="mt-4 w-full max-w-md rounded-lg">
+            
+            <h3 class="text-xl font-semibold text-secondary mt-4">Moving Backward</h3>
+            <p class="text-gray-300">- When the 'Backward' button is pressed (TouchDown event), both motors rotate at same speed (Ex: 255) in the anti-clockwise direction.</p>
+            <p class="text-gray-300">- When the 'Backward' button is released (TouchUp event), both motors stop.</p>
+            <img src="../images/rc_backward.png" alt="Circuit Diagram" class="mt-4 w-full max-w-md rounded-lg">
+
+            <h3 class="text-xl font-semibold text-secondary mt-4">Moving Left</h3>
+            <p class="text-gray-300">- One of the way to turn left is shown here</p>
+
+            <p class="text-gray-300">- When the 'Left' button is pressed (TouchDown event), left motor rotate in anti clockwise and right motor rotate in clockwise direction.</p>
+            <p class="text-gray-300">- When the 'Left' button is released (TouchUp event), both motors stop.</p>
+            <img src="../images/rc_left.png" alt="Circuit Diagram" class="mt-4 w-full max-w-md rounded-lg">
+            
+            <h3 class="text-xl font-semibold text-secondary mt-4">Moving Right</h3>
+            <p class="text-gray-300">- When the 'Right' button is pressed (TouchDown event), left motor rotate in clockwise and right motor rotate in anti clockwise direction.</p>
+            <p class="text-gray-300">- When the 'Right' button is released (TouchUp event), both motors stop.</p>
+            <img src="../images/rc_right.png" alt="Circuit Diagram" class="mt-4 w-full max-w-md rounded-lg">
+
+        </section>
+
+        <section id="demo" class="mt-8 bg-gray-800 p-4 rounded-lg">
+            <h2 class="text-2xl font-semibold text-secondary">Complete Project</h2>
+            <img src="../images/rc_car_infographic.png" alt="Circuit Diagram" class="mt-4 w-full max-w-md rounded-lg">
+            <p class="mt-2 text-gray-300">Build RC Car Using QtPi</p>
+            <a href="https://qtpi.in/projects/RC%20Car" target="_blank" class="text-blue-400 underline">RC Car</a>
+        </section>
+    </div>
+    <footer class="mt-8 text-center text-gray-500">
+        <a href="https://www.youtube.com/@QtPiRobotics" target="_blank" class="text-blue-400 underline">QtPi Youtube </a>
+    </footer>
+</body>
+</html>
