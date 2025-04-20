@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ResearchCrew Crew</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 2rem auto;
+      max-width: 800px;
+      line-height: 1.6;
+      color: #333;
+    }
+    h1, h2, h3 {
+      color: #222;
+    }
+    code {
+      background: #f4f4f4;
+      padding: 2px 4px;
+      border-radius: 4px;
+      font-family: monospace;
+    }
+    pre {
+      background: #f4f4f4;
+      padding: 1rem;
+      border-radius: 4px;
+      overflow-x: auto;
+    }
+    ul {
+      margin-left: 1.5rem;
+    }
+    a {
+      color: #007acc;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Crew using CrewAI </h1>
+  <p>ResearchCrew is a <a href="https://crewai.com">crewAI</a>-powered project that brings together a team of intelligent agents to research, analyze, and generate in-depth reports on any topic. It’s built to simplify complex research by enabling these agents to collaborate effectively using crewAI’s smart and flexible framework.</p>
+
+  <h2>Installation (Pre-Requisite)</h2>
+
+  <ul>
+    <li>CrewAI requires Python &gt;=3.10 and &lt;3.13</li>
+    <li>Create Virtual Environment – This helps keep the project’s dependencies isolated, so it doesn’t interfere with other Python projects or system packages.</li>
+  </ul>
+
+  <pre><code>python3 -m venv .venv
+source .venv/bin/activate
+</code></pre>
+
+  <ul>
+    <li>CrewAI uses the <a href="https://docs.astral.sh/uv/">UV</a> as its dependency management and package handling tool. It simplifies project setup and execution, offering a seamless experience. Since we are creating the project in a virtual environment.</li>
+  </ul>
+
+  <pre><code>pip install uv
+</code></pre>
+
+  <ul>
+    <li>Run the following command to install crewai CLI</li>
+  </ul>
+
+  <pre><code>uv tool install crewai
+</code></pre>
+
+
+  <h2>Create CrewAI Project</h2>
+
+  <ul>
+    <li>Create a new CrewAI project using the CLI. This command will set up a complete project structure with all the necessary files, allowing to focus on defining the agents and their tasks rather than setting up boilerplate code.</li>
+  </ul>
+
+  <pre><code>crewai create crew research_crew
+cd research_crew
+</code></pre>
+
+  <p>This will generate a project with the basic structure needed for the crew. The CLI automatically creates:</p>
+
+  <ul>
+    <li>A project directory with the necessary files</li>
+    <li>Configuration files for agents and tasks</li>
+    <li>A basic crew implementation</li>
+    <li>A main script to run the crew</li>
+  </ul>
+
+  <pre><code>research_crew/
+├── .gitignore               # Specifies intentionally untracked files to ignore
+├── pyproject.toml           # Project metadata and dependencies
+├── README.md                # Project overview and setup instructions
+├── .env                     # Environment variables (e.g., API keys)
+└── src/
+    └── research_crew/
+        ├── __init__.py
+        ├── main.py          # Entry point for running the crew
+        ├── crew.py          # Crew and task execution logic
+        ├── tools/
+        │   ├── custom_tool.py   # Example tool used by agents
+        │   └── __init__.py
+        └── config/
+            ├── agents.yaml      # Agent definitions
+            └── tasks.yaml       # Task definitions
+</code></pre>
+
+  <h3>Configure Agents</h3>
+
+  <p>In CrewAI, agents are specialized entities with specific roles, goals, and backstories that shape their behavior. For the research crew, two agents are created:</p>
+
+  <ul>
+    <li>A researcher that excels at finding and organizing information</li>
+    <li>An analyst that can interpret research findings and create insightful reports.</li>
+  </ul>
+
+  <p>Modified the <code>agents.yaml</code> file to define these specialized agents.</p>
+
+  <h3>Configure Tasks</h3>
+
+  <p>With agents defined in the previous step, we now need to give them specific tasks to perform. Tasks in CrewAI represent the concrete work that agents will perform, with detailed instructions and expected outputs.</p>
+
+  <p>For the research crew, two main tasks are defined:</p>
+
+  <ul>
+    <li>A research task for gathering comprehensive information</li>
+    <li>An analysis task for creating an insightful report</li>
+  </ul>
+
+  <p>Modified the <code>tasks.yaml</code> file accordingly.</p>
+
+  <h3>Configure Crew</h3>
+
+  <p>The crew is the container that orchestrates how agents work together to complete tasks.</p>
+
+  <p>For this project, <code>crew.py</code> is modified to do the following:</p>
+
+  <ol>
+    <li>Create the researcher agent and equip it with the SerperDevTool to search the web</li>
+    <li>Create the analyst agent</li>
+    <li>Set up the research and analysis tasks</li>
+    <li>Configure the crew to run tasks sequentially (the analyst will wait for the researcher to finish)</li>
+  </ol>
+
+  <h3>Setup Main Script</h3>
+
+  <p>The main script will run the crew. This is where we provide the specific topic we want the crew to research. This script prepares the environment, specifies the research topic, and start the crew’s work.</p>
+
+  <h2>Setup Environment Variables</h2>
+
+  <pre><code>OPENAI_API_KEY=your_openai_api_key
+SERPER_API_KEY=your_serper_api_key
+</code></pre>
+
+  <p>Note: We can get <code>SERPER_API_KEY</code> from Serper.dev and <code>OPENAI_API_KEY</code> from platform.api.com.</p>
+
+  <h2>Install Dependencies</h2>
+
+  <p>Navigate to the project directory and install the dependencies using the CrewAI CLI:</p>
+
+  <pre><code>crewai install
+  </code></pre>
+  
+  <h2>Run the project</h2>
+
+  <p>To start the crew of AI agents and begin task execution, run this from the root folder of project:</p>
+
+  <pre><code>crewai run
+  </code></pre>
+
+  <p>This command initializes the research_crew Crew, assembling the agents and assigning them tasks as defined in the configuration.</p>
+
+  <a href="https://github.com/raghua9/LLMs/tree/main/AI_Agents/CrewAI/research_crew" target="_blank">View this project on GitHub</a>
+

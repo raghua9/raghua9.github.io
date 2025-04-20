@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Flow using CrewAI</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 2rem auto;
+      max-width: 800px;
+      line-height: 1.6;
+      color: #333;
+    }
+    h1, h2, h3 {
+      color: #222;
+    }
+    code {
+      background: #f4f4f4;
+      padding: 2px 4px;
+      border-radius: 4px;
+      font-family: monospace;
+    }
+    pre {
+      background: #f4f4f4;
+      padding: 1rem;
+      border-radius: 4px;
+      overflow-x: auto;
+    }
+    ul {
+      margin-left: 1.5rem;
+    }
+    a {
+      color: #007acc;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Flow using CrewAI</h1>
+
+  <p>This is the GuideCreator Flow project, powered by <a href='https://crewai.com'>CrewAI</a>. In this project, the GuideCreator Flow generates a comprehensive learning guide on any topic using structured, event-driven AI workflows.</p>
+
+  <p>This flow uses fundamental patterns like:</p>
+  <ul>
+    <li>Interactive AI assistants combining multiple specialized subsystems</li>
+    <li>Complex data pipelines with AI-enhanced transformations</li>
+    <li>Autonomous agents that integrate with APIs and external services</li>
+    <li>Multi-stage decision-making systems with human-in-the-loop processes</li>
+  </ul>
+
+  <h2>Installation (Pre-Requisite)</h2>
+
+  <ul>
+    <li>CrewAI requires Python &gt;=3.10 and &lt;3.13</li>
+    <li>Create Virtual Environment – This helps keep the project’s dependencies isolated, so it doesn’t interfere with other Python projects or system packages.</li>
+  </ul>
+
+  <pre><code>python3 -m venv .venv
+source .venv/bin/activate
+</code></pre>
+
+  <ul>
+    <li>CrewAI uses the <a href="https://docs.astral.sh/uv/">UV</a> as its dependency management and package handling tool. It simplifies project setup and execution, offering a seamless experience. Since we are creating the project in a virtual environment.</li>
+  </ul>
+
+  <pre><code>pip install uv
+</code></pre>
+
+  <ul>
+    <li>Run the following command to install crewai CLI</li>
+  </ul>
+
+  <pre><code>uv tool install crewai
+</code></pre>
+
+  <h2>Create CrewAI Flow Project</h2>
+
+  <p>Use the CLI to generate a new CrewAI Flow project:</p>
+
+  <pre><code>crewai create flow guide_creator_flow
+cd guide_creator_flow
+</code></pre>
+
+<p>The generated project has the following structure:</p>
+<ul>
+    <li><span class="directory">main.py</span>: The main flow logic</li>
+    <li><span class="directory">crews/</span>: Specialized crews</li>
+    <li><span class="directory">tools/</span>: Custom tools</li>
+</ul>
+  <pre><code>guide_creator_flow/
+├── .gitignore
+├── pyproject.toml
+├── README.md
+├── .env
+├── main.py
+├── crews/
+│   └── poem_crew/
+│       ├── config/
+│       │   ├── agents.yaml
+│       │   └── tasks.yaml
+│       └── poem_crew.py
+└── tools/
+    └── custom_tool.py
+</code></pre>
+
+  <h3>Add Content Writer Crew</h3>
+
+  <p>Create a new content-focused crew:</p>
+
+  <pre><code>crewai flow add-crew content-crew
+</code></pre>
+
+  <p>This sets up the necessary structure and templates for content creation.</p>
+
+  <h2>Configure the Content Writer Crew</h2>
+
+  <ol>
+    <li>Update <code>agents.yaml</code> to define writer and reviewer roles.</li>
+    <li>Update <code>tasks.yaml</code> with detailed writing and reviewing tasks.</li>
+    <li>Edit <code>content_crew.py</code> to coordinate task execution between the agents.</li>
+  </ol>
+
+  <p>This crew definition establishes the relationship between agents and tasks, setting up a sequential process where the content writer creates a draft and then the reviewer improves i</p>
+
+  <h2>Create the Flow</h2>
+
+  <p>The core of the system is defined in <code>main.py</code>. The flow does the following:</p>
+
+  <ul>
+    <li>Prompts for topic and audience level</li>
+    <li>Makes a direct LLM call to generate an outline</li>
+    <li>Uses the crew to process and expand sections</li>
+    <li>Combines results into a final document</li>
+  </ul>
+  <h2>Setup Environment Variables</h2>
+
+  <pre><code>OPENAI_API_KEY=your_openai_api_key
+</code></pre>
+
+  <p>Note: Obtain <code>OPENAI_API_KEY</code> from platform.api.com</p>
+
+  <h2>Install Dependencies</h2>
+
+  <pre><code>crewai install
+</code></pre>
+
+  <h2>Run the Flow Project</h2>
+
+  <pre><code>crewai flow kickoff
+</code></pre>
+
+  <p>This will:</p>
+  <ol>
+    <li>Prompt for input</li>
+    <li>Generate an outline</li>
+    <li>Use agents to create each section</li>
+    <li>Compile the final guide</li>
+  </ol>
+
+  <p>Output will be available in:</p>
+  <ul>
+    <li><code>output/guide_outline.json</code></li>
+    <li><code>output/complete_guide.md</code></li>
+  </ul>
+
+  <h2>Visualize the Flow</h2>
+
+  <p>To generate an HTML visualization:</p>
+
+  <pre><code>crewai flow plot
+</code></pre>
+
+  <p>This creates <code>guide_creator_flow.html</code>, showing relationships between flow steps.</p>
+  <a href="https://github.com/raghua9/LLMs/tree/main/AI_Agents/CrewAI/guide_creator_flow" target="_blank">View this project on GitHub</a>
+</body>
+</html>
