@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Callbacks in ADK</title>
+  
+  <style>
+    .agent-section {
+    margin-top: 2rem;
+    background-color: #f9f9f9;
+    padding: 1.5rem;
+    border-radius: 10px;
+    text-align: center;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+
+  .agent-section h3 {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #222;
+    margin-bottom: 1rem;
+  }
+
+  .agent-image-container {
+    display: inline-block;
+    overflow: hidden;
+    max-width: 100%;
+    height: 350px;
+    width: 100%;
+  }
+
+  .agent-image-container img {
+    width: 100%;
+    
+    height: auto;
+    display: block;
+    margin: 0 auto;
+    object-fit: cover;
+  }
+
+  .agent-section p {
+    margin-top: 1rem;
+    color: #555;
+    font-size: 1rem;
+  }
+    body {
+      font-family: Arial, sans-serif;
+      margin: 2rem auto;
+      max-width: 800px;
+      line-height: 1.6;
+      color: #333;
+    }
+    h1, h2, h3 {
+      color: #222;
+    }
+    code {
+      background: #f4f4f4;
+      padding: 2px 4px;
+      border-radius: 4px;
+      font-family: monospace;
+    }
+    pre {
+      background: #f4f4f4;
+      padding: 1rem;
+      border-radius: 4px;
+      overflow-x: auto;
+    }
+    ul {
+      margin-left: 1.5rem;
+    }
+    a {
+      color: #007acc;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Callbacks in ADK </h1>
+  <p>Callbacks are a cornerstone feature of ADK, providing a powerful mechanism to hook into an agent's execution process. They allow you to observe, customize, and even control the agent's behavior at specific, predefined points without modifying the core ADK framework code. <a href="https://google.github.io/adk-docs/callbacks/">Google ADK Callbacks</a></p>
+
+  <section class="agent-section">
+    <h3>ADK Callback Categories</h3>
+    <div class="agent-image-container">
+      <img src="../images/callback_flow.png" alt="Google ADK Callbacks">
+    </div>
+    <p>In essence, callbacks are standard Python functions that you define. You then associate these functions with an agent when you create it. The ADK framework automatically calls your functions at key stages, letting you observe or intervene.</p>
+  </section>
+
+  <h2>Installation (Pre-Requisite)</h2>
+
+  <ul>
+    <li>Create Virtual Environment – This helps keep the project’s dependencies isolated, so it doesn’t interfere with other Python projects or system packages.</li>
+  </ul>
+
+  <pre><code>python3 -m venv .venv
+source .venv/bin/activate
+</code></pre>
+
+  <ul>
+    <li>Run the following command to install Google ADK</li>
+  </ul>
+
+  <pre><code>pip install google-adk
+</code></pre>
+
+
+  <h3>Google ADK Project Structure</h3>
+
+  <p>We will need to create the following project structure</p>
+
+  <pre><code>
+  parent_folder/
+    adk_tool_agent/
+        __init__.py
+        agent.py
+        .env
+</code></pre>
+
+  <h3>Set up the model</h3>
+
+  <p>Agent needs to make secure calls to this external LLM service, which requires authentication credentials. Set in .env</p>
+
+  <pre><code>
+  GOOGLE_GENAI_USE_VERTEXAI=FALSE
+  GOOGLE_API_KEY=PASTE_YOUR_ACTUAL_API_KEY_HERE
+  </code></pre>
+
+  <h2>Types of Callbacks</h2>
+  <ul>
+    <li>Agent Life Cycle Callbacks
+      <ul>
+        <li>Before Agent Callback - Called immediately before the agent's _run_async_impl method is executed. </li>
+        <li>After_Agent_Callback - Called immediately after the agent's _run_async_impl method successfully completes.</li>
+      </ul>
+    </li>
+  
+    <li>LLM Interaction Callbacks
+      <ul>
+        <li>Before Model Callback - Called just before the generate_content_async (or equivalent) request is sent to the LLM within an LlmAgent's flow.</li>
+        <li>After Model Callback - Called just after a response (LlmResponse) is received from the LLM, before it's processed further by the invoking agent.</li>
+      </ul>
+    </li>
+  
+    <li>Tool Execution Callbacks
+      <ul>
+        <li>Before Tool Callback - Called just before a specific tool's run_async method is invoked, after the LLM has generated a function call for it.</li>
+        <li>After Tool Callback - Called just after the tool's run_async method completes successfully.</li>
+      </ul>
+    </li>
+  </ul>
+
+  <div class="mt-4 p-4 bg-gray-800 rounded-lg">
+    <h3 class="text-xl font-bold text-primary">Agent Life Cycle Callbacks</h3>
+    <pre class="bg-gray-700 p-3 rounded">
+    root_agent = LlmAgent(
+    name="before_after_agent",
+    model="gemini-2.0-flash",
+    description="A basic agent that demonstrates before and after agent callbacks",
+    instruction="""
+    You are a friendly greeting agent. Your name is {agent_name}.
+    
+    Your job is to:
+    - Greet users politely
+    - Respond to basic questions
+    - Keep your responses friendly and concise
+    """,
+    before_agent_callback=before_agent_callback,
+    after_agent_callback=after_agent_callback,
+    )</pre>
+    <p class="mt-2 text-gray-300">This example demonstrates agent callbacks.</p>
+</div>
+
+  <a href="https://github.com/raghua9/LLMs/tree/main/AI_Agents/Google_ADK/callbacks/before_after_agent" target="_blank">View this project on GitHub</a>
+
+  <div class="mt-4 p-4 bg-gray-800 rounded-lg">
+    <h3 class="text-xl font-bold text-primary">LLM Interaction Callbacks</h3>
+    <pre class="bg-gray-700 p-3 rounded">
+      root_agent = LlmAgent(
+        name="content_filter_agent",
+        model="gemini-2.0-flash",
+        description="An agent that demonstrates model callbacks for content filtering and logging",
+        instruction="""
+        You are a helpful assistant.
+        
+        Your job is to:
+        - Answer user questions concisely
+        - Provide factual information
+        - Be friendly and respectful
+        """,
+        before_model_callback=before_model_callback,
+        after_model_callback=after_model_callback,
+    )</pre>
+    <p class="mt-2 text-gray-300">This example demonstrates model callbacks.</p>
+</div>
+
+  <a href="https://github.com/raghua9/LLMs/tree/main/AI_Agents/Google_ADK/callbacks/before_after_model" target="_blank">View this project on GitHub</a>
+
+  <div class="mt-4 p-4 bg-gray-800 rounded-lg">
+    <h3 class="text-xl font-bold text-primary">Tool Execution Callbacks</h3>
+    <pre class="bg-gray-700 p-3 rounded">
+      root_agent = LlmAgent(
+        name="tool_callback_agent",
+        model="gemini-2.0-flash",
+        description="An agent that demonstrates tool callbacks by looking up capital cities",
+        instruction="""
+        You are a helpful geography assistant.
+        
+        Your job is to:
+        - Find capital cities when asked using the get_capital_city tool
+        - Use the exact country name provided by the user
+        - ALWAYS return the EXACT result from the tool, without changing it
+        - When reporting a capital, display it EXACTLY as returned by the tool
+        
+        Examples:
+        - "What is the capital of France?" → Use get_capital_city with country="France"
+        - "Tell me the capital city of Japan" → Use get_capital_city with country="Japan"
+        """,
+        tools=[get_capital_city],
+        before_tool_callback=before_tool_callback,
+        after_tool_callback=after_tool_callback,
+    )</pre>
+    <p class="mt-2 text-gray-300">This example demonstrates tool callbacks.</p>
+</div>
+
+  <a href="https://github.com/raghua9/LLMs/tree/main/AI_Agents/Google_ADK/callbacks/before_after_tool" target="_blank">View this project on GitHub</a>
