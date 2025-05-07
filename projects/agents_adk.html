@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ResearchCrew Crew</title>
+  
+  <style>
+    .agent-section {
+    margin-top: 2rem;
+    background-color: #f9f9f9;
+    padding: 1.5rem;
+    border-radius: 10px;
+    text-align: center;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+
+  .agent-section h3 {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #222;
+    margin-bottom: 1rem;
+  }
+
+  .agent-image-container {
+    display: inline-block;
+    overflow: hidden;
+    max-width: 100%;
+    height: 350px;
+    width: 100%;
+  }
+
+  .agent-image-container img {
+    width: 100%;
+    
+    height: auto;
+    display: block;
+    margin: 0 auto;
+    object-fit: cover;
+  }
+
+  .agent-section p {
+    margin-top: 1rem;
+    color: #555;
+    font-size: 1rem;
+  }
+    body {
+      font-family: Arial, sans-serif;
+      margin: 2rem auto;
+      max-width: 800px;
+      line-height: 1.6;
+      color: #333;
+    }
+    h1, h2, h3 {
+      color: #222;
+    }
+    code {
+      background: #f4f4f4;
+      padding: 2px 4px;
+      border-radius: 4px;
+      font-family: monospace;
+    }
+    pre {
+      background: #f4f4f4;
+      padding: 1rem;
+      border-radius: 4px;
+      overflow-x: auto;
+    }
+    ul {
+      margin-left: 1.5rem;
+    }
+    a {
+      color: #007acc;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Agents using Google ADK </h1>
+  <p>ADK provides distinct agent categories to build sophisticated applications <a href="https://google.github.io/adk-docs/agents/">Google ADK Agents</a></p>
+
+  <section class="agent-section">
+    <h3>ADK Agent Categories</h3>
+    <div class="agent-image-container">
+      <img src="../images/adk_agent-types.png" alt="Google ADK Agents">
+    </div>
+    <p>ADK provides distinct agent categories to build sophisticated applications: LLMAgents, Workflow Agents, Custom Agents</p>
+  </section>
+
+  <h2>Installation (Pre-Requisite)</h2>
+
+  <ul>
+    <li>Create Virtual Environment – This helps keep the project’s dependencies isolated, so it doesn’t interfere with other Python projects or system packages.</li>
+  </ul>
+
+  <pre><code>python3 -m venv .venv
+source .venv/bin/activate
+</code></pre>
+
+  <ul>
+    <li>Run the following command to install Google ADK</li>
+  </ul>
+
+  <pre><code>pip install google-adk
+</code></pre>
+
+
+  <h3>Google ADK Project Structure</h3>
+
+  <p>We will need to create the following project structure</p>
+
+  <pre><code>
+  parent_folder/
+    adk_tool_agent/
+        __init__.py
+        agent.py
+        .env
+</code></pre>
+
+  <h3>Set up the model</h3>
+
+  <p>Agent needs to make secure calls to this external LLM service, which requires authentication credentials. Set in .env</p>
+
+  <pre><code>
+  GOOGLE_GENAI_USE_VERTEXAI=FALSE
+  GOOGLE_API_KEY=PASTE_YOUR_ACTUAL_API_KEY_HERE
+  </code></pre>
+
+  <div class="mt-4 p-4 bg-gray-800 rounded-lg">
+    <h2 class="text-xl font-bold text-primary">LLM Based Agent</h2>
+    <pre class="bg-gray-700 p-3 rounded">
+      from google.adk.agents import Agent
+
+      #Agent and LlmAgent means same
+      root_agent = Agent(
+          name="greeting_agent",
+          # https://ai.google.dev/gemini-api/docs/models
+          model="gemini-2.0-flash",
+          description="Greeting agent",
+          instruction="""
+          You are a helpful assistant that greets the user. 
+          Ask for the user's name and greet them by name.
+          """,
+      )</pre>
+    <p class="mt-2 text-gray-300">This example demonstrates a simple agent that responds to greeting-related queries, showing the fundamentals of agent creation with ADK.</p>
+</div>
+
+  <a href="https://github.com/raghua9/LLMs/tree/main/AI_Agents/Google_ADK/LlmAgent_Sample/basic_greeting_agent" target="_blank">View this project on GitHub</a>
+
+  <h2>Workflow Agents</h2>
+  <h3>Sequential Agent</h3>
+  <section class="agent-section">
+    <div class="agent-image-container">
+      <img src="../images/sequential-agent.png" alt="Sequential Agent">
+    </div>
+    <p>The SequentialAgent is a workflow agent that executes its sub-agents in the order they are specified in the list.</p>
+  </section>
+
+  <div class="mt-4 p-4 bg-gray-800 rounded-lg">
+    <h3 class="text-xl font-bold text-primary">Sequential Agent Code Snippet</h3>
+    <pre class="bg-gray-700 p-3 rounded">
+    root_agent = SequentialAgent(
+    name="LeadQualificationPipeline",
+    sub_agents=[lead_validator_agent, lead_scorer_agent, action_recommender_agent],
+    description="A pipeline that validates, scores, and recommends actions for sales leads",
+)</pre>
+    <p class="mt-2 text-gray-300">This example demonstrates a simple agent that responds to greeting-related queries, showing the fundamentals of agent creation with ADK.</p>
+</div>
+
+  <a href="https://github.com/raghua9/LLMs/tree/main/AI_Agents/Google_ADK/Workflow_Agents/Sequential_Agent/lead_qualification_agent" target="_blank">View this project on GitHub</a>
+
+  <h3 class="text-xl font-bold text-primary">Parallel Agent</h3>
+
+  <section class="agent-section">
+    <div class="agent-image-container">
+      <img src="../images/parallel-agent.png" alt="Parallel Agent">
+    </div>
+    <p>The ParallelAgent is a workflow agent that executes its sub-agents concurrently.</p>
+  </section>
+
+  <div class="mt-4 p-4 bg-gray-800 rounded-lg">
+    <h3 class="text-xl font-bold text-primary">Parallel Agent Code Snippet</h3>
+    <pre class="bg-gray-700 p-3 rounded">
+    parallel_research_agent = ParallelAgent(
+    name="ParallelWebResearchAgent",
+    sub_agents=[researcher_agent_1, researcher_agent_2, researcher_agent_3],
+    description="Runs multiple research agents in parallel to gather information."
+)</pre>
+    <p class="mt-2 text-gray-300"> This agent orchestrates the concurrent execution of the researchers.It finishes once all researchers have completed and stored their results in state.</p>
+</div>
+
+  <a href="https://github.com/raghua9/LLMs/tree/main/AI_Agents/Google_ADK/Workflow_Agents/Parallel_Agent/researcher_agent" target="_blank">View this project on GitHub</a>
+
+  <h3 class="text-xl font-bold text-primary">Loop Agent</h3>
+
+  <section class="agent-section">
+    <div class="agent-image-container">
+      <img src="../images/loop-agent.png" alt="Loop Agent">
+    </div>
+    <p>The LoopAgent is a workflow agent that executes its sub-agents in a loop (i.e. iteratively).</p>
+  </section>
+
+  <div class="mt-4 p-4 bg-gray-800 rounded-lg">
+    <h3 class="text-xl font-bold text-primary">Loop Agent Code snippet</h3>
+    <pre class="bg-gray-700 p-3 rounded">
+    youtube_shorts_agent = LoopAgent(
+    name="youtube_shorts_agent",
+    max_iterations=3,
+    sub_agents=[scriptwriter_agent, visualizer_agent, formatter_agent],
+)</pre>
+    <p class="mt-2 text-gray-300">It repeatedly runs a sequence of agents for a specified number of iterations or until a termination condition is met.</p>
+</div>
+
+  <a href="https://github.com/raghua9/LLMs/tree/main/AI_Agents/Google_ADK/Workflow_Agents/Loop_Agent/youtube_short_sample" target="_blank">View this project on GitHub</a>
