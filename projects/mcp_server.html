@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MCP Server Setup</title>
+  
+  <style>
+    .agent-section {
+    margin-top: 2rem;
+    background-color: #f9f9f9;
+    padding: 1.5rem;
+    border-radius: 10px;
+    text-align: center;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+
+  .agent-section h3 {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #222;
+    margin-bottom: 1rem;
+  }
+
+  .agent-image-container {
+    display: inline-block;
+    overflow: hidden;
+    max-width: 100%;
+    height: 500px;
+    width: 100%;
+  }
+
+  .agent-image-container img {
+    width: 100%;
+    
+    height: auto;
+    display: block;
+    margin: 0 auto;
+    object-fit: cover;
+  }
+
+  .agent-section p {
+    margin-top: 1rem;
+    color: #555;
+    font-size: 1rem;
+  }
+    body {
+      font-family: Arial, sans-serif;
+      margin: 2rem auto;
+      max-width: 800px;
+      line-height: 1.6;
+      color: #333;
+    }
+    h1, h2, h3 {
+      color: #222;
+    }
+    code {
+      background: #f4f4f4;
+      padding: 2px 4px;
+      border-radius: 4px;
+      font-family: monospace;
+    }
+    pre {
+      background: #f4f4f4;
+      padding: 1rem;
+      border-radius: 4px;
+      overflow-x: auto;
+    }
+    ul {
+      margin-left: 1.5rem;
+    }
+    a {
+      color: #007acc;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>MCP Server</h1>
+  <p>MCP is an open protocol that standardizes how applications provide context to LLMs.
+    MCP provides a standardized way to connect AI models to different data sources and tools.
+    Link to more information <a href="https://modelcontextprotocol.io/introduction">MCP</a></p>
+
+  <section class="agent-section">
+    <h3>MCP Architecture</h3>
+    <div class="agent-image-container">
+      <img src="../images/mcp_architecture.png" alt="MCP Architecture">
+    </div>
+    <p>MCP follows a client-server architecture where a host application can connect to multiple servers</p>
+  </section>
+  <ul>
+    <li>MCP Hosts: Programs that want to access data through MCP</li>
+    <li>MCP Clients: Protocol clients that maintain 1:1 connections with servers </li>
+    <li>MCP Servers: Lightweight programs that each expose specific capabilities through the standardized Model Context Protocol</li>
+    <li>Local Data Sources: computer’s files, databases, and services that MCP servers can securely access </li>
+    <li>Remote Services: External systems available over the internet (e.g., through APIs) that MCP servers can connect to.</li>
+  </ul>
+
+  <h2>Installation (Pre-Requisite)</h2>
+  <p>System Requirements</p>
+  <ul>
+    <li>Python 3.10 or higher installed.</li>
+    <li>Python MCP SDK 1.2.0 or higher</li>
+  </ul>
+
+  <p>Setup Environment</p>
+  <ul>
+    <li>Install uv</li>
+  </ul>
+  <pre><code>
+    curl -LsSf https://astral.sh/uv/install.sh | sh
+  </code></pre>
+
+  <ul>
+    <li>Create Virtual Environment – This helps keep the project’s dependencies isolated, so it doesn’t interfere with other Python projects or system packages.</li>
+  </ul>
+
+  <pre><code>
+    # Create a new directory for our project
+    uv init weather
+    cd weather
+    
+    # Create virtual environment and activate it
+    uv venv
+    source .venv/bin/activate
+    
+    # Install dependencies
+    uv add "mcp[cli]" httpx
+    
+    # Create our server file
+    touch weather.py
+  </code></pre>
+
+  <h2>Building MCP Server</h2>
+  <p>We’ll build a server that exposes two tools: get-alerts and get-forecast. 
+    Then we’ll connect the server to an MCP host (in this case, Claude for Desktop)</p>
+
+  <div class="mt-4 p-4 bg-gray-800 rounded-lg">
+    <h3 class="text-xl font-bold text-primary">Importing Packages and setting up the instance</h3>
+    <pre class="bg-gray-700 p-3 rounded">
+      from typing import Any
+      import httpx
+      from mcp.server.fastmcp import FastMCP
+      
+      # Initialize FastMCP server
+      mcp = FastMCP("weather")
+    </pre>
+    <p class="mt-2 text-gray-300">FastMCP makes building MCP servers simple and intuitive. Create tools, expose resources, and define prompts with clean, Pythonic code.</p>
+</div>
+
+<div class="mt-4 p-4 bg-gray-800 rounded-lg">
+    <h3 class="text-xl font-bold text-primary">Implementing tool execution</h3>
+    <p>Sample code of tool definition</p>
+    <pre class="bg-gray-700 p-3 rounded">
+    @mcp.tool()
+    async def get_alerts(state: str) -> str:
+    """Get weather alerts for a US state.
+
+    Args:
+        state: Two-letter US state code (e.g. CA, NY)
+    """
+  </pre>
+    <p class="mt-2 text-gray-300">The tool execution handler is responsible for actually executing the logic of each tool.</p>
+</div>
+
+<div class="mt-4 p-4 bg-gray-800 rounded-lg">
+    <h3 class="text-xl font-bold text-primary">Running the server</h3>
+    <pre class="bg-gray-700 p-3 rounded">
+    if __name__ == "__main__":
+    # Initialize and run the server
+    mcp.run(transport='stdio')
+    </pre>
+    <p class="mt-2 text-gray-300">Run uv run weather.py to confirm that everything’s working.</p>
+</div>
+
+<a href="https://github.com/raghua9/LLMs/tree/main/MCP/mcp_servers" target="_blank">View this project on GitHub</a>
+
+<h2>Testing the server</h2>
+<p>First, make sure you have Claude for Desktop installed. You can install the latest version here.</p>
+
+<p>configure Claude for Desktop for whichever MCP servers you want to use. To do this, open your Claude for Desktop App configuration at ~/Library/Application Support/Claude/claude_desktop_config.json</p>
+
+<pre><code>
+  {
+    "mcpServers": {
+        "weather": {
+            "command": "uv",
+            "args": [
+                "--directory",
+                "{folder-path}/weather",
+                "run",
+                "weather.py"
+            ]
+        }
+    }
+}
+</code></pre>
+<p>Claude for Desktop picks up the two tools exposed in the weather server.</p>
+<section class="agent-section">
+  <div class="agent-image-container" style="height: 300px; display: flex; justify-content: center; align-items: center;">
+    <img src="../images/claude_tools.png" alt="Claude using MCP" style="max-height: 100%; max-width: 100%; object-fit: contain;">
+  </div>
+  <p></p>
+</section>
+
+<p>We can test the server by running the commands in Claude for Desktop</p>
