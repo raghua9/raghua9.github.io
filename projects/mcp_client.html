@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MCP Client Setup</title>
+  
+  <style>
+    .agent-section {
+    margin-top: 2rem;
+    background-color: #f9f9f9;
+    padding: 1.5rem;
+    border-radius: 10px;
+    text-align: center;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+
+  .agent-section h3 {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #222;
+    margin-bottom: 1rem;
+  }
+
+  .agent-image-container {
+    display: inline-block;
+    overflow: hidden;
+    max-width: 100%;
+    height: 500px;
+    width: 100%;
+  }
+
+  .agent-image-container img {
+    width: 100%;
+    
+    height: auto;
+    display: block;
+    margin: 0 auto;
+    object-fit: cover;
+  }
+
+  .agent-section p {
+    margin-top: 1rem;
+    color: #555;
+    font-size: 1rem;
+  }
+    body {
+      font-family: Arial, sans-serif;
+      margin: 2rem auto;
+      max-width: 800px;
+      line-height: 1.6;
+      color: #333;
+    }
+    h1, h2, h3 {
+      color: #222;
+    }
+    code {
+      background: #f4f4f4;
+      padding: 2px 4px;
+      border-radius: 4px;
+      font-family: monospace;
+    }
+    pre {
+      background: #f4f4f4;
+      padding: 1rem;
+      border-radius: 4px;
+      overflow-x: auto;
+    }
+    ul {
+      margin-left: 1.5rem;
+    }
+    a {
+      color: #007acc;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <h1>MCP Client</h1>
+  <p>We will build a LLM-powered chatbot client that connects to MCP servers.</p>
+
+  <h2>Installation (Pre-Requisite)</h2>
+  <p>System Requirements</p>
+  <ul>
+    <li>Python 3.10 or higher installed.</li>
+    <li>Python MCP SDK 1.2.0 or higher</li>
+  </ul>
+
+  <p>Setup Environment</p>
+
+  <ul>
+    <li>Create Virtual Environment – This helps keep the project’s dependencies isolated, so it doesn’t interfere with other Python projects or system packages.</li>
+  </ul>
+
+  <pre><code>
+    # Create project directory
+    uv init mcp-client
+    cd mcp-client
+    
+    # Create virtual environment
+    uv venv
+    
+    # Activate virtual environment
+    # On MacOS:
+    source .venv/bin/activate
+    
+    # Install required packages
+    uv add mcp anthropic python-dotenv
+    
+    # Remove boilerplate files
+    # MacOS:
+    rm main.py
+    
+    # Create our main file
+    touch client.py
+  </code></pre>
+
+  <p>Setting up API Key</p> 
+  <pre><code>
+  # Create .env file
+  touch .env
+  ANTHROPIC_API_KEY=#API key here
+  </code></pre>
+
+  <h2>Building MCP Client</h2>
+  <ul>
+    <li>Client Initialization - Initializes session management and API client instances, Configures the Anthropic client for Claude interactions</li>
+    <li>Server Connection - Sets up proper communication channels, Initializes the session and lists available tools</li>
+    <li>Query Processing- Manages the message flow between Claude and tools, Combines results into a coherent response</li>
+    <li>Interactive Interface - Provides a simple command-line interface, Handles user input and displays responses</li>
+    <li>Resource Management - Proper cleanup of resources, Error handling for connection issues</li>
+  </ul>
+
+  <div class="mt-4 p-4 bg-gray-800 rounded-lg">
+    <h3 class="text-xl font-bold text-primary">Code snippet (main execution)</h3>
+    <pre class="bg-gray-700 p-3 rounded">
+    async def main():
+    if len(sys.argv) < 2:
+        print("Usage: python client.py 'path_to_server_script'")
+        sys.exit(1)
+
+    client = MCPClient()
+    try:
+        await client.connect_to_server(sys.argv[1])
+        await client.chat_loop()
+    finally:
+        await client.cleanup()
+
+    if __name__ == "__main__":
+    import sys
+    asyncio.run(main())
+    </pre>
+    <p class="mt-2 text-gray-300"></p>
+</div>
+
+
+<a href="https://github.com/raghua9/LLMs/tree/main/MCP/mcp-client" target="_blank">View this project on GitHub</a>
+
+<h2>Running the client</h2>
+<p>To run your client with any MCP server:</p>
+
+<pre><code>
+  uv run client.py path/to/server.py 
+</code></pre>
+<p>The client will:
+
+  <ul>
+    <li>Connect to the specified server</li>
+    <li>List available tools</li>
+    <li>Start an interactive chat session we you can:
+      <ul>
+        <li>Enter queries</li>
+        <li>See tool executions</li>
+        <li>Get responses from Claude</li>
+      </ul>
+    </li>
+  </ul>
+<section class="agent-section">
+  <div class="agent-image-container" style="height: 300px; display: flex; justify-content: center; align-items: center;">
+    <img src="../images/mcp_client_output.png" alt="Claude using MCP" style="max-height: 100%; max-width: 100%; object-fit: contain;">
+  </div>
+  <p></p>
+</section>
+
+<p>When query is submitted:</p>
+<ul>
+  <li>The client gets the list of available tools from the server</li>
+  <li>Query is sent to Claude along with tool descriptions</li>
+  <li>Claude decides which tools (if any) to use</li>
+  <li>The client executes any requested tool calls through the server</li>
+  <li>Results are sent back to Claude</li>
+  <li>Claude provides a natural language response</li>
+  <li>The response is displayed to the user</li>
+</ul>
